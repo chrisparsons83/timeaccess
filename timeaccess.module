@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * @file
+ * Require users to spend time on selected pages in order to access additional
+ * pages.
+ */
+
+/**
+ * Implements hook_perm().
+ */
+function timeaccess_perm() {
+  return array();
+}

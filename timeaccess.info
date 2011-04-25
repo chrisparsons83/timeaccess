@@ -1,0 +1,5 @@
+name = Time Access
+description = "Require users to spend time on selected pages in order to access additional pages."
+core = 6.x
+version = "6.x-1.x-dev"
+project = "timeaccess"
