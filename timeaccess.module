@@ -10,7 +10,7 @@
  * Implements hook_menu().
  */
 function timeaccess_menu() {
-  $items['admin/build/timeaccess'] = array(
+  $items['admin/build/timeaccess/list'] = array(
     'title' => 'TimeAccess',
     'page callback' => 'timeaccess_list_rulesets',
     'access arguments' => array('administer timeaccess'),
