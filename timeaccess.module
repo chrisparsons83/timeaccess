@@ -34,5 +34,5 @@ function timeaccess_menu() {
  * Implements hook_perm().
  */
 function timeaccess_perm() {
-  return array('administer timeaccess');
+  return array('administer timeaccess', 'view all locked pages');
 }
