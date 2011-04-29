@@ -1,19 +1,158 @@
 <?php
 
 /**
+ * @file
+ * Install file for timeaccess module.
+ */
+
+/**
  * Implementation of hook_install().
  */
 function timeaccess_install() {
+  drupal_install_schema('timeaccess');
 }
 
 /**
  * Implementation of hook_schema().
  */
 function timeaccess_schema() {
+  $schema['timeaccess_rulesets'] = array(
+    'description' => t('List of rulesets stored by the module.'),
+    'fields' => array(
+      'taid' => array(
+        'description' => t('Primary Key: Unique ID'),
+        'type' => 'serial',
+        'not null' => TRUE),
+      'name' => array(
+        'description' => t('Administrative name of ruleset.'),
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+        'default' => ''),
+      'is_active' => array(
+        'description' => t('A flag to store if a ruleset is active (1) or not (0).'),
+        'type' => 'int',
+        'size' => 'small',
+        'not null' => TRUE,
+        'default' => 1)
+      ),
+    'primary key' => array('taid'),
+  );
+  $schema['timeaccess_rules'] = array(
+    'description' => t('Stores individual rules to be applied to timeaccess rulesets.'),
+    'fields' => array(
+      'tarid' => array(
+        'description' => t('Primary Key: Unique ID'),
+        'type' => 'serial',
+        'not null' => TRUE),
+      'taid' => array(
+        'description' => t('Foreign Key: Connects to taid in the timeaccess table.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0),
+      'path' => array(
+        'description' => t('Internal path to page which rule is tracking.'),
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => ''),
+      'time' => array(
+        'description' => t('Time, measured in seconds, that rule requires.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0)
+      ),
+    'primary key' => array('tarid'),
+    'indexes' => array(
+      'reporter' => array('taid'),
+    ),
+  );
+  $schema['timeaccess_actions'] = array(
+    'description' => t('List of paths that will be protected until a user completes all requirements.'),
+    'fields' => array(
+      'taactid' => array(
+        'description' => t('Primary Key: Unique ID.'),
+        'type' => 'serial',
+        'not null' => TRUE),
+      'taid' => array(
+        'description' => t('Foreign Key: Connects to taid in the timeaccess table.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0),
+      'path' => array(
+        'description' => t('Internal path to page which rule is tracking.'),
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '')
+    ),
+    'primary key' => array('taactid'),
+    'indexes' => array(
+      'reporter' => array('taid'),
+    ),
+  );
+  $schema['timeaccess_timetracking'] = array(
+    'description' => t('List of users and amount of time spent on paths.'),
+    'fields' => array(
+      'tattid' => array(
+        'description' => t('Primary Key: Unique ID.'),
+        'type' => 'serial',
+        'not null' => TRUE),
+      'tarid' => array(
+        'description' => t('Foreign Key: Connects to tarid in the timeaccess_rules table.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0),
+      'uid' => array(
+        'description' => t('Foreign Key: Connects to uid in the users table.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0),
+      'time' => array(
+        'description' => t('Time, measured in seconds, that user has spent on rule path.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0)
+    ),
+    'primary key' => array('tattid'),
+    'indexes' => array(
+      'tar_reporter' => array('tarid'),
+      'uid_reporter' => array('uid'),
+      'tar_uid_reporter' => array('uid', 'tarid'),
+    ),
+  );
+  $schema['timeaccess_uidaccess'] = array(
+    'description' => t('List of users that have access to the corresponding rulesets.'),
+    'fields' => array(
+      'tauaid' => array(
+        'description' => t('Primary Key: Unique ID.'),
+        'type' => 'serial',
+        'not null' => TRUE),
+      'taid' => array(
+        'description' => t('Foreign Key: Connects to taid in the timeaccess table.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0),
+      'uid' => array(
+        'description' => t('Foreign Key: Connects to uid in the users table.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0)
+    ),
+    'primary key' => array('tauaid'),
+    'indexes' => array(
+      'taid_reporter' => array('taid'),
+      'uid_reporter' => array('uid'),
+    ),
+  );
+
+  
+  return $schema;
 }
 
 /**
  * Implementation of hook_uninstall().
  */
 function timeaccess_uninstall() {
+  drupal_uninstall_schema('timeaccess');
 }
