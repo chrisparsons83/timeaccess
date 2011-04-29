@@ -13,3 +13,10 @@ function timeaccess_list_rulesets() {
 
   return $output;
 }
+
+/**
+ * Add new ruleset.
+ */
+function timeaccess_add_ruleset() {
+  return $output;
+}

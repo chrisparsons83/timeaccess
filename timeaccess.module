@@ -18,6 +18,14 @@ function timeaccess_menu() {
     'weight' => 10,
     'file' => 'timeaccess.admin.inc',
   );
+  $items['admin/build/timeaccess/add'] = array(
+    'title' => 'Add ruleset',
+    'page callback' => 'timeaccess_add_rulesets',
+    'access arguments' => array('administer timeaccess'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 10,
+    'file' => 'timeaccess.admin.inc',
+  );
 
   return $items;
 }
