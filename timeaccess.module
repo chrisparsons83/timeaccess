@@ -10,5 +10,5 @@
  * Implements hook_perm().
  */
 function timeaccess_perm() {
-  return array();
+  return array('administer timeaccess');
 }
