@@ -7,6 +7,22 @@
  */
 
 /**
+ * Implements hook_menu().
+ */
+function timeaccess_menu() {
+  $items['admin/build/timeaccess'] = array(
+    'title' => 'TimeAccess',
+    'page callback' => 'timeaccess_list_rulesets',
+    'access arguments' => array('administer timeaccess'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 10,
+    'file' => 'timeaccess.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
  * Implements hook_perm().
  */
 function timeaccess_perm() {
