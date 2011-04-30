@@ -27,7 +27,7 @@ function timeaccess_list_rulesets($query = array(), $conditions = array()) {
   );
 
   // Build the SQL query for the rows.
-  $sql = 'SELECT taid FROM {timeaccess_rulesets}';
+  $sql = 'SELECT taid, name FROM {timeaccess_rulesets}';
   if ($query['conditions']) {
     $sql .= ' WHERE (' . implode(') AND (', $query['conditions']). ')';
   }
@@ -39,11 +39,31 @@ function timeaccess_list_rulesets($query = array(), $conditions = array()) {
     $query = db_query($sql, $query['args']);
   }
 
-  // Load the rulesets.
-  $taids = array();
-
-  // Generate the rows
+  // Convert to array for theming
   $rows = array();
+  while ($row = db_fetch_array($query)) {
+    // Grab taid for URLs, and unset from table.
+    $temp_taid = $row['taid'];
+    unset($row['taid']);
+
+    // Create operations links.
+    if (isset($header['operations'])) {
+      $operations = array();
+      $operations['edit'] = array(
+        'title' => t('Edit'),
+        'href' => 'admin/build/timeaccess/edit/' . $temp_taid,
+      );
+      $operations['delete'] = array(
+        'title' => t('Delete'),
+        'href' => 'admin/build/timeaccess/delete/' . $temp_taid,
+      );
+      $row['operations'] = theme('links', $operations, array('class' => 'links inline nowrap'));
+    }
+    $rows[(string) $temp_taid] = $row;
+  }
+
+
+  // Give a message if there are no rulesets.
   if (empty($rows)) {
     $rows[] = array(array(
       'data' => t('No Rulesets Available.'),
