@@ -15,7 +15,6 @@ function timeaccess_menu() {
     'description' => 'Requre users to spend time on certain pages to access other pages.',
     'page callback' => 'timeaccess_list_rulesets',
     'access arguments' => array('administer timeaccess'),
-    'type' => MENU_LOCAL_TASK,
     'file' => 'timeaccess.admin.inc',
   );
   $items['admin/build/timeaccess/list'] = array(
@@ -26,7 +25,8 @@ function timeaccess_menu() {
   $items['admin/build/timeaccess/add'] = array(
     'title' => 'Add ruleset',
     'description' => 'Add a new TimeAccess ruleset.',
-    'page callback' => 'timeaccess_add_rulesets',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('timeaccess_ruleset_edit_form'),
     'access arguments' => array('administer timeaccess'),
     'type' => MENU_LOCAL_TASK,
     'file' => 'timeaccess.admin.inc',
