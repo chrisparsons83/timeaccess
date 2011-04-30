@@ -10,20 +10,25 @@
  * Implements hook_menu().
  */
 function timeaccess_menu() {
-  $items['admin/build/timeaccess/list'] = array(
+  $items['admin/build/timeaccess'] = array(
     'title' => 'TimeAccess',
+    'description' => 'Requre users to spend time on certain pages to access other pages.',
     'page callback' => 'timeaccess_list_rulesets',
     'access arguments' => array('administer timeaccess'),
     'type' => MENU_LOCAL_TASK,
-    'weight' => 10,
     'file' => 'timeaccess.admin.inc',
+  );
+  $items['admin/build/timeaccess/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
   );
   $items['admin/build/timeaccess/add'] = array(
     'title' => 'Add ruleset',
+    'description' => 'Add a new TimeAccess ruleset.',
     'page callback' => 'timeaccess_add_rulesets',
     'access arguments' => array('administer timeaccess'),
     'type' => MENU_LOCAL_TASK,
-    'weight' => 10,
     'file' => 'timeaccess.admin.inc',
   );
 
