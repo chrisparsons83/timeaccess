@@ -8,7 +8,14 @@
 /**
  * Builds list of rulesets for administration page.
  */
-function timeaccess_list_rulesets() {
+function timeaccess_list_rulesets($query = array(), $conditions = array()) {
+  // Initialize the query array.
+  $query += array(
+    'conditions' => array(),
+    'args' => array(),
+    'limit' => 0,
+  );
+
   // Set up the header.
   $header = array(
     'name' => array(
@@ -20,6 +27,20 @@ function timeaccess_list_rulesets() {
   );
 
   // Build the SQL query for the rows.
+  $sql = 'SELECT taid FROM {timeaccess_rulesets}';
+  if ($query['conditions']) {
+    $sql .= ' WHERE (' . implode(') AND (', $query['conditions']). ')';
+  }
+  $sql .= tablesort_sql($header);
+  if ($query['limit']) {
+    $query = pager_query($sql, $query['limit'], 0, NULL, $query['args']);
+  }
+  else {
+    $query = db_query($sql, $query['args']);
+  }
+
+  // Load the rulesets.
+  $taids = array();
 
   // Generate the rows
   $rows = array();
