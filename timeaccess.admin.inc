@@ -70,6 +70,7 @@ function timeaccess_ruleset_edit_form_submit($form, &$form_state) {
 function timeaccess_ruleset_save($ruleset) {
   dpm($ruleset);
 
+  // Write to database
   if(empty($ruleset['taid'])) {
     drupal_write_record('timeaccess_rulesets', $ruleset);
   }
